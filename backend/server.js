@@ -3,11 +3,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const path = require('path');
-const https = require('https');
-const fs = require('fs');
+const axios = require('axios'); // Import Axios
 
 const app = express();
-const port = 443; 
+const port = 80; // Change to port 80 for HTTP
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -43,6 +42,17 @@ async function connectToMongoDB() {
     } catch (err) {
         console.error("Error connecting to MongoDB Atlas:", err);
         throw err;
+    }
+}
+
+// Function to get public IP
+async function getPublicIp() {
+    try {
+        const response = await axios.get('https://ifconfig.me/ip');
+        return response.data.trim();
+    } catch (error) {
+        console.error('Error fetching public IP:', error);
+        return null;
     }
 }
 
@@ -127,8 +137,9 @@ app.get('/api/leaderboard', async (req, res) => {
 async function startServer() {
     try {
         await connectToMongoDB();
+        const publicIp = await getPublicIp(); // Fetch public IP
         app.listen(port, () => {
-            console.log(`Server running on port ${port}`);
+            console.log(`Server running on http://${publicIp}:${port}`); // Log public IP
         });
     } catch (error) {
         console.error('Failed to start server:', error);
@@ -137,32 +148,3 @@ async function startServer() {
 }
 
 startServer();
-
-const axios = require('axios'); 
-
-async function getPublicIp() {
-    try {
-        const response = await axios.get('https://ifconfig.me/ip');
-        return response.data.trim();
-    } catch (error) {
-        console.error('Error fetching public IP:', error);
-        return null;
-    }
-}
-
-// SSL certificate and private key
-const privateKey = fs.readFileSync(path.join(__dirname, 'privateKey.key'), 'utf8');
-const certificate = fs.readFileSync(path.join(__dirname, 'certificate.crt'), 'utf8');
-const credentials = { key: privateKey, cert: certificate };
-
-const httpsServer = https.createServer(credentials, app);
-
-getPublicIp().then(publicIp => {
-    if (publicIp) {
-        console.log(`Server is running on https://${publicIp}:${port}`);
-    } else {
-        console.log(`Server is running on https://localhost:${port}`);
-    }
-});
-
-httpsServer.listen(port);
