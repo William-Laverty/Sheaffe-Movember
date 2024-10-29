@@ -137,9 +137,9 @@ app.get('/api/leaderboard', async (req, res) => {
 async function startServer() {
     try {
         await connectToMongoDB();
-        const publicIp = await getPublicIp(); // Fetch public IP
+        const publicIp = await getPublicIp(); 
         app.listen(port, () => {
-            console.log(`Server running on http://${publicIp}:${port}`); // Log public IP
+            console.log(`Server running on http://${publicIp}:${port}`); 
         });
     } catch (error) {
         console.error('Failed to start server:', error);
