@@ -19,6 +19,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
 const uri = "mongodb+srv://william:sgGDUQyUDbb2fYpx@sheaffe.mhcvp.mongodb.net/?retryWrites=true&w=majority&appName=Sheaffe";
 
 const client = new MongoClient(uri, {
