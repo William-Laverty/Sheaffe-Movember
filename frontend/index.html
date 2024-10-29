@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movember Distance Tracker - Sheaffe House</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div>
+                <h1 class="title">Movember</h1>
+                <h2 class="subtitle">Sheaffe House</h2>
+            </div>
+            <div class="user-controls">
+                <button class="icon-button" id="addButton">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </header>
+
+        <section class="progress-section">
+            <h3 class="progress-title">Total Distance Walked:</h3>
+            <div class="progress-bar">
+                <span class="progress-text"></span>
+                <div class="footsteps">
+                    <i class="fas fa-shoe-prints footstep"></i>
+                    <i class="fas fa-shoe-prints footstep"></i>
+                    <i class="fas fa-shoe-prints footstep"></i>
+                    <i class="fas fa-shoe-prints footstep"></i>
+                    <i class="fas fa-shoe-prints footstep"></i>
+                </div>
+            </div>
+        </section>
+
+        <section class="leaderboard-section">
+            <h3 class="leaderboard-title">Leaderboard</h3>
+        </section>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="loginModal">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div id="loginView">
+                <h2 class="modal-title">Login to Add Distance</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="lastName">Last Name</label>
+                        <input type="text" id="lastName" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="yearLevel">Year Level</label>
+                        <select id="yearLevel" class="form-input" required>
+                            <option value="" disabled selected>Select year level</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                        </select>
+                    </div>
+                    <div class="error-message" id="errorMessage">
+                        User not found. Please check your details.
+                    </div>
+                    <button type="submit" class="button">Login</button>
+                </form>
+            </div>
+            
+            <div id="addDistanceView">
+                <h2 class="modal-title" id="userFullName">Welcome</h2>
+                <form id="distanceForm">
+                    <div class="form-group">
+                        <label class="form-label" for="distance">Distance (km)</label>
+                        <input type="number" id="distance" class="form-input" step="0.01" required>
+                    </div>
+                    <button type="submit" class="button">Submit Distance</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
