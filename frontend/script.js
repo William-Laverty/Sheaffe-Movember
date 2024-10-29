@@ -109,7 +109,7 @@ let currentUser = null;
 
 async function checkServerConnection() {
     try {
-        const response = await fetch('http://localhost:5500/api/leaderboard');
+        const response = await fetch('http://localhost:443/api/leaderboard');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -187,7 +187,7 @@ distanceForm.addEventListener('submit', async (e) => {
     console.log('Submitting distance payload:', payload);
 
     try {
-        const response = await fetch('http://localhost:5500/api/distance', {
+        const response = await fetch('http://localhost:443/api/distance', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ distanceForm.addEventListener('submit', async (e) => {
 
 async function updateLeaderboard() {
     try {
-        const response = await fetch('http://localhost:5500/api/leaderboard');
+        const response = await fetch('http://localhost:443/api/leaderboard');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

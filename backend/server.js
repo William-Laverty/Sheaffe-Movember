@@ -3,9 +3,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const path = require('path');
+const https = require('https');
+const fs = require('fs');
 
 const app = express();
-const port = 5500; // Changed to match your frontend port
+const port = 443; 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -135,3 +137,32 @@ async function startServer() {
 }
 
 startServer();
+
+const axios = require('axios'); 
+
+async function getPublicIp() {
+    try {
+        const response = await axios.get('https://ifconfig.me/ip');
+        return response.data.trim();
+    } catch (error) {
+        console.error('Error fetching public IP:', error);
+        return null;
+    }
+}
+
+// SSL certificate and private key
+const privateKey = fs.readFileSync(path.join(__dirname, 'privateKey.key'), 'utf8');
+const certificate = fs.readFileSync(path.join(__dirname, 'certificate.crt'), 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
+const httpsServer = https.createServer(credentials, app);
+
+getPublicIp().then(publicIp => {
+    if (publicIp) {
+        console.log(`Server is running on https://${publicIp}:${port}`);
+    } else {
+        console.log(`Server is running on https://localhost:${port}`);
+    }
+});
+
+httpsServer.listen(port);
